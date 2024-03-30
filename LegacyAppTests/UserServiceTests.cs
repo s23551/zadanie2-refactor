@@ -159,7 +159,7 @@ public class UserServiceTests
         var service = new UserService();
 
         //Act
-        var result = service.AddUser("John", "Doe", "kowalski@wp.pl", new DateTime(2010, 1, 1), 1);
+        var result = service.AddUser("John", "Doe", "kowalski@wp.pl", new DateTime(DateTime.Now.Year - 19, 1, 1), 1);
 
         //Assert
         Assert.Equal(false, result);
