@@ -3,15 +3,15 @@
 namespace LegacyApp
 {
     public class UserService
+
     {
+
+        IUserValidator UserValidator = new UserValidator();
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
-            {
-                return false;
-            }
+            var ValidUser = UserValidator.Validate(firstName, lastName, email, dateOfBirth, clientId);
 
-            if (!email.Contains("@") && !email.Contains("."))
+            if (!ValidUser)
             {
                 return false;
             }
