@@ -21,6 +21,11 @@ namespace LegacyApp
                 return false;
             }
 
+            if (!CheckBDate(dateOfBirth))
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -37,6 +42,11 @@ namespace LegacyApp
         private bool CheckEmail(String email)
         {
             return email.Contains("@") && email.Contains(".");
+        }
+
+        private bool CheckBDate(DateTime date)
+        {
+            return DateTime.Now.Year - date.Year < 150;
         }
     }
 }
