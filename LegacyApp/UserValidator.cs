@@ -36,7 +36,7 @@ namespace LegacyApp
 
         private bool CheckEmail(String email)
         {
-            return !email.Contains("@") && !email.Contains(".");
+            return email.Contains("@") && email.Contains(".");
         }
     }
 }
