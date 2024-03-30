@@ -153,7 +153,7 @@ public class UserServiceTests
 
 
     [Fact]
-    public void AddUser_Should_Return_False_When_Younger_Then_21_Years_Old()
+    public void AddUser_Should_Return_False_When_Younger_Than_21_Years_Old()
     {
         //Arrange
         var service = new UserService();
