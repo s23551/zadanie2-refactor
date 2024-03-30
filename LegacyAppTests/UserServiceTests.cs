@@ -5,7 +5,7 @@ namespace LegacyAppTests;
 public class UserServiceTests
 {
     [Fact]
-    public void AddUser_Should_Return_False_When_Missing_FirstName()
+    public void AddUser_Should_Return_False_When_Missing_FirstName_And_LastName()
     {
         //Arrange
         var service = new UserService();
@@ -16,7 +16,35 @@ public class UserServiceTests
         //Assert
         Assert.Equal(false, result);
     }
-    
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_Missing_FirstName()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser(null, "Nowak", "kowalski@wp.pl", new DateTime(1980, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_Missing_LastName()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("Janina", null, "kowalski@wp.pl", new DateTime(1980, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
+
+
     [Fact]
     public void AddUser_Should_Return_False_When_Missing_At_Sign_And_Dot_In_Email()
     {
