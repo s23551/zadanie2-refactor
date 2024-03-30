@@ -164,7 +164,33 @@ public class UserServiceTests
         //Assert
         Assert.Equal(false, result);
     }
-    
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_BirthDate_Is_In_Future()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("John", "Doe", "kowalski@wp.pl", DateTime.Now.AddDays(1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_User_Is_Older_Than_150_Years()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("John", "Doe", "kowalski@wp.pl", new DateTime(DateTime.Now.Year - 150, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
     [Fact]
     public void AddUser_Should_Return_True_When_Very_Important_Client()
     {
