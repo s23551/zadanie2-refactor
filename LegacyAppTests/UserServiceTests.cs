@@ -43,6 +43,45 @@ public class UserServiceTests
         Assert.Equal(false, result);
     }
 
+    [Fact]
+    public void AddUser_Should_Return_False_When_Empty_FirstName_And_LastName()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("", "", "kowalski@wp.pl", new DateTime(1980, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_Empty_FirstName()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("", "Nowak", "kowalski@wp.pl", new DateTime(1980, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
+    [Fact]
+    public void AddUser_Should_Return_False_When_Empty_LastName()
+    {
+        //Arrange
+        var service = new UserService();
+
+        //Act
+        var result = service.AddUser("Janina", "", "kowalski@wp.pl", new DateTime(1980, 1, 1), 1);
+
+        //Assert
+        Assert.Equal(false, result);
+    }
+
 
 
     [Fact]
