@@ -10,17 +10,33 @@ namespace LegacyApp
     {
         public bool Validate(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
+            if (CheckNullOrEmpty(firstName) || CheckNullOrEmpty(lastName) || CheckNullOrEmpty(email) 
+                || CheckNull(dateOfBirth) || CheckNull(clientId))
             {
                 return false;
             }
 
-            if (!email.Contains("@") && !email.Contains("."))
+            if (!CheckEmail(email))
             {
                 return false;
             }
 
             return true;
+        }
+
+        private bool CheckNull(Object? obj)
+        {
+            return obj == null;
+        }
+
+        private bool CheckNullOrEmpty(String? str)
+        {
+            return string.IsNullOrEmpty(str);
+        }
+
+        private bool CheckEmail(String email)
+        {
+            return !email.Contains("@") && !email.Contains(".");
         }
     }
 }
