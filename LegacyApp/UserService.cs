@@ -7,9 +7,8 @@ namespace LegacyApp
         private IUserValidator _userValidator;
         
         
-        public UserService()
+        public UserService() : this(new UserValidator())
         {
-            new UserService(new UserValidator());
         }
 
         public UserService(IUserValidator userValidator)
