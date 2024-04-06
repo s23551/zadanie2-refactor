@@ -5,15 +5,17 @@ namespace LegacyApp
     public class UserService
     {
         private IUserValidator _userValidator;
+        private IClientRepository _clientRepository;
         
         
-        public UserService() : this(new UserValidator())
+        public UserService() : this(new UserValidator(), new ClientRepository())
         {
         }
 
-        public UserService(IUserValidator userValidator)
+        public UserService(IUserValidator userValidator, IClientRepository clientRepository)
         {
             this._userValidator = userValidator;
+            this._clientRepository = clientRepository;
         }
         
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
@@ -25,8 +27,7 @@ namespace LegacyApp
                 return false;
             }
 
-            var clientRepository = new ClientRepository();
-            var client = clientRepository.GetById(clientId);
+            var client = _clientRepository.GetById(clientId);
 
             var user = new User
             {
