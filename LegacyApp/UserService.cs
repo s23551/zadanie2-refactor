@@ -11,17 +11,17 @@ namespace LegacyApp
         private IUserDataAccessAdapter _userDataAccessAdapter;
         
         
-        public UserService() : this(new UserValidator(), new ClientRepository(), new ClientMapper(), new UserCreditService(), new UserDataAccessAdapter())
+        public UserService() : this(new DefaultUserServiceConfig())
         {
         }
 
-        public UserService(IUserValidator userValidator, IClientRepository clientRepository, IClientMapper clientMapper, IUserCreditService userCreditService, IUserDataAccessAdapter userDataAccessAdapter)
+        public UserService(IUserServiceConfig config)
         {
-            this._userValidator = userValidator;
-            this._clientRepository = clientRepository;
-            this._clientMapper = clientMapper;
-            this._userCreditService = userCreditService;
-            this._userDataAccessAdapter = userDataAccessAdapter;
+            this._userValidator = config.UserValidator();
+            this._clientRepository = config.ClientRepository();
+            this._clientMapper = config.ClientMapper();
+            this._userCreditService = config.UserCreditService();
+            this._userDataAccessAdapter = config.UserDataAccessAdapter();
         }
         
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
