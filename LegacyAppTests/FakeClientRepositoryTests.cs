@@ -17,4 +17,18 @@ public class FakeClientRepositoryTests
         //Assert
         Assert.Equal(result, testClient);
     }
+    
+    [Fact]
+    public void FakeClientRepository_Should_Throw_Exception_When_User_Does_Not_Exist()
+    {
+        //Arrange
+        var repository = new FakeClientRepository();
+
+        //Act and Assert
+        Assert.Throws<ArgumentException>(() =>
+        {
+            _ = repository.GetById(-1);
+        });
+    }
+
 }

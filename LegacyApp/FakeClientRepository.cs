@@ -1,4 +1,6 @@
-﻿namespace LegacyApp;
+﻿using System;
+
+namespace LegacyApp;
 
 public class FakeClientRepository : IClientRepository
 {
@@ -49,6 +51,10 @@ public class FakeClientRepository : IClientRepository
     
     public Client GetById(int id)
     {
+        if (id == -1)
+        {
+            throw new ArgumentException("No such client in FakeDatabase.");
+        }
         return TEST_CLIENT;
     }
 }
