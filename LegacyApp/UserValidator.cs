@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace LegacyApp;
 
 public class UserValidator : IUserValidator
@@ -28,3 +29,4 @@ public class UserValidator : IUserValidator
         return true;
     }
 }
+

@@ -3,7 +3,9 @@
 namespace LegacyApp
 {
     public class UserService
+
     {
+
         private IUserValidator _userValidator;
         private IClientRepository _clientRepository;
         private IClientMapper _clientMapper;
@@ -14,6 +16,7 @@ namespace LegacyApp
         public UserService() : this(new DefaultUserServiceConfig())
         {
         }
+
 
         public UserService(IUserServiceConfig config)
         {
