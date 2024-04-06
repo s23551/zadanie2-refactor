@@ -8,18 +8,20 @@ namespace LegacyApp
         private IClientRepository _clientRepository;
         private IClientMapper _clientMapper;
         private IUserCreditService _userCreditService;
+        private IUserDataAccessAdapter _userDataAccessAdapter;
         
         
-        public UserService() : this(new UserValidator(), new ClientRepository(), new ClientMapper(), new UserCreditService())
+        public UserService() : this(new UserValidator(), new ClientRepository(), new ClientMapper(), new UserCreditService(), new UserDataAccessAdapter())
         {
         }
 
-        public UserService(IUserValidator userValidator, IClientRepository clientRepository, IClientMapper clientMapper, IUserCreditService userCreditService)
+        public UserService(IUserValidator userValidator, IClientRepository clientRepository, IClientMapper clientMapper, IUserCreditService userCreditService, IUserDataAccessAdapter userDataAccessAdapter)
         {
             this._userValidator = userValidator;
             this._clientRepository = clientRepository;
             this._clientMapper = clientMapper;
             this._userCreditService = userCreditService;
+            this._userDataAccessAdapter = userDataAccessAdapter;
         }
         
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
@@ -50,7 +52,7 @@ namespace LegacyApp
             else
             {
                 int creditLimit = _userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                if (user.Client.GetType().Equals(ClientType.ImportantClient))
+                if (clientDao.Type.Equals(ClientType.ImportantClient))
                 {
                     creditLimit *= 2;
                 }
@@ -64,7 +66,7 @@ namespace LegacyApp
                 return false;
             }
 
-            UserDataAccess.AddUser(user);
+            _userDataAccessAdapter.AddUser(user);
             return true;
         }
     }
