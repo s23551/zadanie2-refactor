@@ -6,16 +6,18 @@ namespace LegacyApp
     {
         private IUserValidator _userValidator;
         private IClientRepository _clientRepository;
+        private IClientMapper _clientMapper;
         
         
-        public UserService() : this(new UserValidator(), new ClientRepository())
+        public UserService() : this(new UserValidator(), new ClientRepository(), new ClientMapper())
         {
         }
 
-        public UserService(IUserValidator userValidator, IClientRepository clientRepository)
+        public UserService(IUserValidator userValidator, IClientRepository clientRepository, IClientMapper clientMapper)
         {
             this._userValidator = userValidator;
             this._clientRepository = clientRepository;
+            this._clientMapper = clientMapper;
         }
         
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
@@ -28,10 +30,11 @@ namespace LegacyApp
             }
 
             var client = _clientRepository.GetById(clientId);
-
+            var clientDao = _clientMapper.map(client);
+            
             var user = new User
             {
-                Client = client,
+                Client = clientDao,
                 DateOfBirth = dateOfBirth,
                 EmailAddress = email,
                 FirstName = firstName,

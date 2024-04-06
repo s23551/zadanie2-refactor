@@ -8,7 +8,7 @@ public class FakeClientRepository : IClientRepository
         Address = "Test",
         ClientId = 801,
         Email = "Test@Test.pl",
-        Type = "Test"
+        Type = "TestClient"
     };
     
     public Client GetById(int id)
