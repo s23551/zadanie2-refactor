@@ -6,58 +6,62 @@ namespace LegacyApp
 
     {
 
-        IUserValidator UserValidator = new UserValidator();
+        private IUserValidator _userValidator;
+        private IClientRepository _clientRepository;
+        private IClientMapper _clientMapper;
+        private IUserCreditService _userCreditService;
+        private IUserDataAccessAdapter _userDataAccessAdapter;
+        
+        
+        public UserService() : this(new DefaultUserServiceConfig())
+        {
+        }
+
+
+        public UserService(IUserServiceConfig config)
+        {
+            this._userValidator = config.UserValidator();
+            this._clientRepository = config.ClientRepository();
+            this._clientMapper = config.ClientMapper();
+            this._userCreditService = config.UserCreditService();
+            this._userDataAccessAdapter = config.UserDataAccessAdapter();
+        }
+        
         public bool AddUser(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
         {
-            var ValidUser = UserValidator.Validate(firstName, lastName, email, dateOfBirth, clientId);
+            var userValidated = _userValidator.Validate(firstName, lastName, email, dateOfBirth, clientId);
 
-            if (!ValidUser)
+            if (!userValidated)
             {
                 return false;
             }
 
-            var now = DateTime.Now;
-            int age = now.Year - dateOfBirth.Year;
-            if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
-
-            if (age < 21)
-            {
-                return false;
-            }
-
-            var clientRepository = new ClientRepository();
-            var client = clientRepository.GetById(clientId);
-
+            var client = _clientRepository.GetById(clientId);
+            var clientDao = _clientMapper.map(client);
+            
             var user = new User
             {
-                Client = client,
+                Client = clientDao,
                 DateOfBirth = dateOfBirth,
                 EmailAddress = email,
                 FirstName = firstName,
                 LastName = lastName
             };
-            
-            if (client.Type == "VeryImportantClient")
+
+            if (clientDao.Type.Equals(ClientType.VeryImportantClient))
             {
                 user.HasCreditLimit = false;
             }
-            else if (client.Type == "ImportantClient")
-            {
-                using (var userCreditService = new UserCreditService())
-                {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    creditLimit = creditLimit * 2;
-                    user.CreditLimit = creditLimit;
-                }
-            }
             else
             {
-                user.HasCreditLimit = true;
-                using (var userCreditService = new UserCreditService())
+                int creditLimit = _userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
+                if (clientDao.Type.Equals(ClientType.ImportantClient))
                 {
-                    int creditLimit = userCreditService.GetCreditLimit(user.LastName, user.DateOfBirth);
-                    user.CreditLimit = creditLimit;
+                    creditLimit *= 2;
                 }
+
+                user.HasCreditLimit = true;
+                user.CreditLimit = creditLimit;
             }
             
             if (user.HasCreditLimit && user.CreditLimit < 500)
@@ -65,7 +69,7 @@ namespace LegacyApp
                 return false;
             }
 
-            UserDataAccess.AddUser(user);
+            _userDataAccessAdapter.AddUser(user);
             return true;
         }
     }

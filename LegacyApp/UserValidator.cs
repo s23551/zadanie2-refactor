@@ -1,52 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace LegacyApp
+
+namespace LegacyApp;
+
+public class UserValidator : IUserValidator
 {
-    internal class UserValidator : IUserValidator
+    public bool Validate(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
     {
-        public bool Validate(string firstName, string lastName, string email, DateTime dateOfBirth, int clientId)
+        if (string.IsNullOrEmpty(firstName) || string.IsNullOrEmpty(lastName))
         {
-            if (CheckNullOrEmpty(firstName) || CheckNullOrEmpty(lastName) || CheckNullOrEmpty(email) 
-                || CheckNull(dateOfBirth) || CheckNull(clientId))
-            {
-                return false;
-            }
-
-            if (!CheckEmail(email))
-            {
-                return false;
-            }
-
-            if (!CheckBDate(dateOfBirth))
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
 
-        private bool CheckNull(Object? obj)
+        if (!email.Contains("@") && !email.Contains("."))
         {
-            return obj == null;
+            return false;
         }
 
-        private bool CheckNullOrEmpty(String? str)
+        var now = DateTime.Now;
+        int age = now.Year - dateOfBirth.Year;
+        if (now.Month < dateOfBirth.Month || (now.Month == dateOfBirth.Month && now.Day < dateOfBirth.Day)) age--;
+
+        if (age < 21)
         {
-            return string.IsNullOrEmpty(str);
+            return false;
         }
 
-        private bool CheckEmail(String email)
-        {
-            return email.Contains("@") && email.Contains(".");
-        }
-
-        private bool CheckBDate(DateTime date)
-        {
-            return DateTime.Now.Year - date.Year < 150;
-        }
+        return true;
     }
 }
+
