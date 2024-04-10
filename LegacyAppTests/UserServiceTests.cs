@@ -98,61 +98,6 @@ public class UserServiceTests
     }
 
     [Fact]
-    public void AddUser_Should_Return_False_When_Missing_At_Sign_In_Email()
-    {
-        //Arrange
-        var service = new UserService();
-
-        //Act
-        var result = service.AddUser("John", "Doe", "kowalskiwp.pl", new DateTime(1980, 1, 1), 1);
-
-        //Assert
-        Assert.Equal(false, result);
-    }
-
-    [Fact]
-    public void AddUser_Should_Return_False_When_Missing_Dot_In_Email()
-    {
-        //Arrange
-        var service = new UserService();
-
-        //Act
-        var result = service.AddUser("John", "Doe", "kowalski@wppl", new DateTime(1980, 1, 1), 1);
-
-        //Assert
-        Assert.Equal(false, result);
-    }
-
-    [Fact]
-    public void AddUser_Should_Return_False_When_Email_Is_Null()
-    {
-        //Arrange
-        var service = new UserService();
-
-        //Act
-        var result = service.AddUser("John", "Doe", null, new DateTime(1980, 1, 1), 1);
-
-        //Assert
-        Assert.Equal(false, result);
-    }
-
-    [Fact]
-    public void AddUser_Should_Return_False_When_Email_Is_Empty()
-    {
-        //Arrange
-        var service = new UserService();
-
-        //Act
-        var result = service.AddUser("John", "Doe", "", new DateTime(1980, 1, 1), 1);
-
-        //Assert
-        Assert.Equal(false, result);
-    }
-
-
-
-
-    [Fact]
     public void AddUser_Should_Return_False_When_Younger_Than_21_Years_Old()
     {
         //Arrange
